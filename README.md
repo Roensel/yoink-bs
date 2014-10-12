@@ -37,4 +37,4 @@ and add:
 
 *Now work out that buffer! (without blowing your storage quota)*
 
-**Contributors:  [tobbez![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=605)  [evanjd/notarebel![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=417)  [phracker![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=260077)  [feralhosting![<3](http://i.imgur.com/kX2q6Bm.png)](https://www.feralhosting.com)**
+**Eternal thanks and gratitude flies out to:  [tobbez![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=605)  [evanjd/notarebel![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=417)  [phracker![<3](http://i.imgur.com/kX2q6Bm.png)](https://what.cd/user.php?id=260077)  [feralhosting![<3](http://i.imgur.com/kX2q6Bm.png)](https://www.feralhosting.com)**
