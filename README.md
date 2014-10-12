@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://i.imgur.com/C8OW3yw.png" alt="Yoink">
+<img src="https://i.imgur.com/SOufsEW.png" alt="Yoink-BS">
 </p>
 
 *A Freeleech Torrent Grabber for BrokenStones*
