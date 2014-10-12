@@ -25,8 +25,6 @@ Yoink-BS settings are stored in ~/.yoink-bs-rc and this file will be auto-genera
 - `storage_dir`: Your torrent data directory. If left blank, defaults to your home directory.
 - `track_by_index_number`: TRUE or FALSE. If true, will write all downloaded torrent IDs to ~/.yoink-bs.db and use this as the primary mechanism for checking if a given torrent has already been yoinked.
 
-[Filter Configuration Information](http://git.io/5ZFi9A)
-
 To create a cron job that executes this script every hour, simply:
 
 `$ crontab -e`

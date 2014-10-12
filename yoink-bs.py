@@ -331,6 +331,7 @@ def main():
   print "Phew! All done."
   print '\n'
   print "Yoink-BS!: The Freeleech Torrent Grabber for BrokenStones"
+  print "Eternal thanks to the original Yoink authors!"
   print "\"Go Yoink! Yourself!\""
 
 if __name__ == '__main__':
