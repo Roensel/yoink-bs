@@ -13,7 +13,7 @@ import sqlite3
 from os.path import expanduser
 
 ## SAFE TO EDIT ##
-dbpath = '~/.yoink.db'
+dbpath = '~/.yoink-bs.db'
 
 ## DO NOT TOUCH THESE ##
 user = ''
@@ -28,35 +28,35 @@ add_all_torrents_to_db = False
 defaultrc=["user:",'\n',"password:",'\n',"target:"'\n',"max_age:"'\n',"max_storage_in_mb:"'\n',"storage_dir:"'\n',"track_by_index_number:TRUE",'\n',"encoding:",'\n',"format:",'\n',"media:",'\n',"releasetype:"]
 
 headers = {
-  'User-Agent': 'Yoink! Beta'
+  'User-Agent': 'Yoink-BS! Beta'
 }
 
 def printHelpMessage(header = ''):
   if len(header) > 0:
     print header
-  print 'Yoink! A Freeleech Torrent Grabber for What.CD'
-  print 'Developed by tobbez, forked by phracker and evanjd.'
-  print 'usage: python yoink.py [option]'
+  print 'Yoink-BS! A Freeleech Torrent Grabber for BrokenStones.me'
+  print 'Developed by tobbez, forked by phracker and evanjd, customized for BS by Roensel.'
+  print 'usage: python yoink-bs.py [option]'
   print 'Options:'
-  print '--add-all-torrents-to-db : adds all existing freeleech torrents to the yoink'
+  print '--add-all-torrents-to-db : adds all existing freeleech torrents to the yoink-bs'
   print '                           database without downloading the .torrent file.'
   print '                           Use this option if you want to ignore all'
   print '                           existing freeleech torrents and only yoink new ones.'
-  print '--recreate-yoinkrc       : deletes existing ~/.yoinkrc and generates new file'
+  print '--recreate-yoink-bs-rc   : deletes existing ~/.yoink-bs-rc and generates new file'
   print '                           with default settings. Use this if migrating from'
   print '                           another version of yoink.py'
   print '--help, -h -?            : this help message'
   print '\n'
-  print 'Yoink settings are stored in ~/.yoinkrc. Accepted paramaters are:'
-  print '   user:                  [your what.cd username]'
-  print '   password:              [your what.cd password]'
+  print 'Yoink-BS settings are stored in ~/.yoink-bs-rc. Accepted paramaters are:'
+  print '   user:                  [your BrokenStones username]'
+  print '   password:              [your BrokenStones password]'
   print '   target:                [your torrent client watch dir]'
   print '   max_age:               [the maximum age of a torrent in days that'
-  print '                          yoink will download].'
+  print '                          yoink-bs will download].'
   print '                          If left blank, will not check age of torrent.'
   print '   max_storage_in_mb:     [the maximum size in megabytes of your storage dir]'
   print '                          If the size of your storage folder exceeds the'
-  print '                          specified size, yoink will stop downloading'
+  print '                          specified size, yoink-bs will stop downloading'
   print '                          new torrents.'
   print '                          Intended for seedboxes with limited storage quotas.'
   print '                          If left blank, will not check size of storage dir.'
@@ -64,7 +64,7 @@ def printHelpMessage(header = ''):
   print '                          If left blank, defaults to home directory.'
   print '   track_by_index_number: [TRUE or FALSE]'
   print '                          if true, will write all downloaded torrent IDs to'
-  print '                          ~/.yoink.db and use this as the primary mechanism'
+  print '                          ~/.yoink-bs.db and use this as the primary mechanism'
   print '                          for checking if a given torrent has already'
   print '                          been yoinked.'
   print '\n'
@@ -93,7 +93,7 @@ def torrentAlreadyDownloaded(tid):
       else:
         torrent_found = True
     except Exception,e:
-      print 'Error when executing SELECT on ~/.yoink.db:'
+      print 'Error when executing SELECT on ~/.yoink-bs.db:'
       print str(e)
       sys.exit()
     finally:
@@ -112,7 +112,7 @@ def addTorrentToDB(tid):
         indexdbc.execute("INSERT INTO snatchedtorrents values (?)", [tid])
         indexdb.commit()
       except Exception,e:
-        print 'Error when executing INSERT on ~/.yoink.db:'
+        print 'Error when executing INSERT on ~/.yoink-bs.db:'
         print str(e)
         sys.exit()
       finally:
@@ -146,12 +146,12 @@ def download_torrent(session, tid, name):
     return
 
   if not hasattr(download_torrent, 'authdata'):
-    r = session.get('https://what.cd/ajax.php?action=index', headers=headers)
+    r = session.get('https://brokenstones.me/ajax.php?action=index', headers=headers)
     d = json.loads(r.content)
     download_torrent.authdata = '&authkey={}&torrent_pass={}'.format(d['response']['authkey'], d['response']['passkey'])
 
   print '{}:'.format(tid),
-  dl = session.get('https://what.cd/torrents.php?action=download&id={}{}'.format(tid, download_torrent.authdata), headers=headers)
+  dl = session.get('https://brokenstones.me/torrents.php?action=download&id={}{}'.format(tid, download_torrent.authdata), headers=headers)
   with open(path, 'wb') as f:
     for chunk in dl.iter_content(1024*1024):
       f.write(chunk)
@@ -159,13 +159,13 @@ def download_torrent(session, tid, name):
   print 'Yoink!'
 
 def main():
-  rcpath=os.path.expanduser('~/.yoinkrc')
+  rcpath=os.path.expanduser('~/.yoink-bs-rc')
 
   if checkForArg('--help') or checkForArg('-h') or checkForArg('-?'):
     printHelpMessage()
     return 0
 
-  if checkForArg('--recreate-yoinkrc'):
+  if checkForArg('--recreate-yoink-bs-rc'):
     if os.path.exists(rcpath):
       os.remove(rcpath)
 
@@ -174,7 +174,7 @@ def main():
     rcf.writelines(defaultrc)
     rcf.flush()
     rcf.close()
-    printHelpMessage('Wrote initial-run configuration file to ~/.yoinkrc\nYou will need to modify this file before continuing!\nSee below for accepted parameters:\n')
+    printHelpMessage('Wrote initial-run configuration file to ~/.yoink-bs-rc\nYou will need to modify this file before continuing!\nSee below for accepted parameters:\n')
     return 0
   else:
     rcf = open(rcpath)
@@ -202,7 +202,7 @@ def main():
     releasetype = rcf.readline().rstrip('\n')[12:]
 
     if user=='' or password=='' or target=='' or track_by_index_number=='':
-      printHelpMessage('ERROR: The ~/.yoinkrc configuration file appears incomplete!\nYou may need to use option --recreate-yoinkrc to revert your ~/.yoinkrc to the initial-run state for this version of Yoink.\n')
+      printHelpMessage('ERROR: The ~/.yoink-bs-rc configuration file appears incomplete!\nYou may need to use option --recreate-yoink-bs-rc to revert your ~/.yoink-bs-rc to the initial-run state for this version of Yoink-BS.\n')
       return 0
 
     if max_age != '' and not max_age.isdigit():
@@ -260,7 +260,7 @@ def main():
 
   s = requests.session()
 
-  cookiefile = os.path.expanduser('~/.yoink.dat')
+  cookiefile = os.path.expanduser('~/.yoink-bs.dat')
   if os.path.exists(cookiefile):
     with open(cookiefile, 'r') as f:
       s.cookies = pickle.load(f)
@@ -271,7 +271,7 @@ def main():
   while connected == False and connectionAttempts < 10:
     try:
       connectionAttempts += 1
-      r = s.get('https://what.cd/login.php')
+      r = s.get('https://brokenstones.me/login.php', verify=False)
       connected = True
     except requests.exceptions.TooManyRedirects:
       s.cookies.clear()
@@ -279,9 +279,9 @@ def main():
       print e
       sys.exit(1)  
 
-  if r.url != u'https://what.cd/index.php':
-    r = s.post('https://what.cd/login.php', data={'username': user, 'password': password, 'keeplogged': 1}, headers=headers)
-    if r.url != u'https://what.cd/index.php':
+  if r.url != u'https://brokenstones.me/index.php':
+    r = s.post('https://brokenstones.me/login.php', data={'username': user, 'password': password, 'keeplogged': 1}, headers=headers)
+    if r.url != u'https://brokenstones.me/index.php':
       printHelpMessage("Login failed - come on, you're looking right at your password!\n")
       return
 
@@ -295,7 +295,7 @@ def main():
   continueLeeching = True
   page = 1
   while continueLeeching:
-    r = s.get('https://what.cd/ajax.php?action=browse&' + search_params + "&page={}".format(page), headers=headers)
+    r = s.get('https://brokenstones.me/ajax.php?action=browse&' + search_params + "&page={}".format(page), headers=headers)
     data = json.loads(r.content)
     for group in data['response']['results']:
       if max_age != False:
@@ -330,8 +330,9 @@ def main():
   print '\n'
   print "Phew! All done."
   print '\n'
-  print "Yoink!: The Freeleech Torrent Grabber for What.CD"
+  print "Yoink-BS!: The Freeleech Torrent Grabber for BrokenStones"
   print "\"Go Yoink! Yourself!\""
 
 if __name__ == '__main__':
   main()
+
